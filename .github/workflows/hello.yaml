@@ -4,5 +4,8 @@ jobs:
     test:
         runs-on: ubuntu-latest
         steps:
-            - name: first workflow
-              run: echo "Hello World!"
+            - name: Get code
+              run: |
+                echo "cloning repo...."
+                echo "${{toJson(github)}}"
+                git clone https://github.com/${{github.repository}}.git
