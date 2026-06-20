@@ -1,0 +1,8 @@
+name: initial commit
+on: push
+job:
+    name:
+        runs-on: ubuntu-latest
+        steps:
+          - name: first step
+            run: echo "Hello World!"
