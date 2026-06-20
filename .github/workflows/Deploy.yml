@@ -1,0 +1,43 @@
+name: auto deployment
+on: 
+    push: 
+        branches:
+            - main
+            - 'feature/'
+    workflow_dispatch:
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get code
+            #   run: |
+                # echo "cloning repo...."
+                # echo "${{toJson(github)}}"
+                # git clone https://github.com/${{github.repository}}.git
+              uses: actions/checkout@v4
+            - name: Install node 20
+              uses: actions/setup-node@v4
+              with: 
+                node-version: 20
+            - name: print node version
+              run: node -v
+            - name: Install dependencies
+              run: npm install
+            - name: Run Tests
+              run: npm run test
+    build:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get the code
+              uses: actions/checkout@v4
+            - name: Install node 20
+              uses: actions/setup-node@v4
+              with:
+                node-version: 20
+            - name: Node version
+              run: node -v
+            - name: Install dependecies
+              run: npm install
+            - name: build 
+              run: npm run build
