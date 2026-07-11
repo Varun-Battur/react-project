@@ -1,0 +1,20 @@
+name: OWASP ZAP Security Scan
+
+on:
+  push:
+    branches: [ "main", "feature/tags" ]
+
+jobs:
+  zap_scan:
+    runs-on: ubuntu-latest
+    name: Scan the Web Application
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: OWASP ZAP Full Scan
+        uses: zaproxy/action-full-scan@v0.12.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          target: 'https://varun-battur.github.io/react-project/' # Replace with your test/staging URL
+          cmd_options: '-a' # Includes alpha passive scan rules (useful for modern auth patterns)
