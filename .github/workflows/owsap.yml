@@ -24,7 +24,7 @@ jobs:
       # Executes targeted checks mapped directly to OWASP Top 10 risk vectors
       - name: Run OWASP Top 10 Tests
         run: |
-          nuclei -target "https://your-auth-endpoint.com" \
+          nuclei -target "https://464mrqc4-8080.inc1.devtunnels.ms/store" \
                  -header "Authorization: Bearer ${{ secrets.SCAN_AUTH_TOKEN }}" \
                  -tags owasp,misconfig,exposure \
                  -markdown-export security_report/
