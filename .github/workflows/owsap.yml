@@ -2,7 +2,7 @@ name: OWASP Top 10 Security Testing
 
 on:
   push:
-    branches: [ "main" ]
+    # branches: [ "main" ]
   workflow_dispatch: 
 
 jobs:
@@ -13,14 +13,15 @@ jobs:
       - name: Checkout Repository Code
         uses: actions/checkout@v4
 
-      # Fixed: Added "nuclei" to the end of the unzip command to extract ONLY the binary file
+      # Installs the standalone Nuclei binary directly from its official release assets
       - name: Install Standalone Scanner Natively
         run: |
-          wget url?id=1projectdiscovery/nuclei/releases/download/v3.3.0/nuclei_3.3.0_linux_amd64.zip
+          wget https://github.com/projectdiscovery/nuclei/releases/download/v3.3.0/nuclei_3.3.0_linux_amd64.zip
           unzip -o nuclei_3.3.0_linux_amd64.zip nuclei
           sudo mv nuclei /usr/local/bin/
           nuclei -update-templates
 
+      # Runs specific OWASP Top 10 web signatures, misconfigurations, and exposures
       - name: Run OWASP Top 10 Tests
         run: |
           nuclei -target "https://464mrqc4-8080.inc1.devtunnels.ms/" \
@@ -29,6 +30,7 @@ jobs:
                  -markdown-export security_report/
         continue-on-error: true 
 
+      # Safely bundles the final markdown vulnerability reports as a downloadable artifact
       - name: Upload Security Vulnerability Report
         uses: actions/upload-artifact@v4
         with:
